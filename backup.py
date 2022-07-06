@@ -1,13 +1,18 @@
 import os
 import datetime
-from pydrive.auth import GoogleAuth
+from pydrive.auth import GoogleAuth, RefreshError
 from pydrive.drive import GoogleDrive
 
 
 def authenticate_google():
     """Handles Google oAuth and returns google drive object 
     """
-    gauth = GoogleAuth()  
+    try:
+        gauth = GoogleAuth()  
+    except RefreshError:
+        """If token has expired"""
+        os.remove("credentials.json")
+        gauth = GoogleAuth()  
     gauth.LocalWebserverAuth()       
     drive = GoogleDrive(gauth)
     return drive
