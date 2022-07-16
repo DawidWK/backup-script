@@ -7,13 +7,13 @@ from pydrive.drive import GoogleDrive
 def authenticate_google():
     """Handles Google oAuth and returns google drive object 
     """
+    gauth = GoogleAuth()  
     try:
-        gauth = GoogleAuth()  
+        gauth.LocalWebserverAuth()       
     except RefreshError:
         """If token has expired"""
         os.remove("credentials.json")
         gauth = GoogleAuth()  
-    gauth.LocalWebserverAuth()       
     drive = GoogleDrive(gauth)
     return drive
 
